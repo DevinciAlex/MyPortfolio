@@ -2,15 +2,18 @@
     margin:0;
     padding: 0;
     box-sizing: border-box;
-    background-color: black;
     color: white;
   }
   
+  #particles-js {
+    background-color: black;
+  }
+
   header {
     display: flex; 
-    justify-content: space-between; 
+    justify-content: flex-end; 
     padding: 1vw 1vh;
-    height: 60px; 
+    height: 60px;
   }
   
   .contact {
@@ -25,7 +28,6 @@
     left: 80vw;
     transform: translate(-50%, -50%);
     white-space: nowrap;
-    transform: translate(-50%, -50%);
   }
   
   .c-mouse-vertical-carousel__bg-img{
@@ -44,10 +46,10 @@
   }
   
   h2{
-    
     display: flex;
     justify-content: center;
-    margin-bottom: 5%;
+    margin-bottom: 15%;
+    font-size: 2rem;
   } 
   
   button{
@@ -62,6 +64,7 @@
     border-radius: 100px;
     border: 2px solid white;
     cursor: pointer;
+    color: black;
   } 
   
   .media {
@@ -72,8 +75,60 @@
     margin-bottom: 5%;
   }
 
-  .project {
-    width:100%; 
-    height:100%; 
-    object-fit:cover;
+  #photo {
+    max-height: 10rem;
   }
+  video {
+    position: absolute;
+    height: auto;
+    width: 45vw;
+    object-fit: cover;
+    margin-left: -11vw;
+    margin-top: -1rem;
+  }
+.QUI-SUIS-JE {
+  display: flex;
+  margin-left: -11vw;
+  gap: 2rem;
+  width: 220%;
+}
+ .QUI-SUIS-JE p {
+  white-space: normal;
+  line-height: 1.6rem;
+  font-size: 1.3rem;
+}
+
+.Description {
+  font-size: 1.2rem;
+  white-space: normal;
+  width: 200%;
+  margin-bottom: 2rem;
+  margin-top: -2rem;
+  margin-left: -11vw;
+}
+
+.DescriptionL2M {
+  font-size: 1rem;
+  white-space: normal;
+  width: 200%;
+  margin-bottom: 2.5rem;
+  margin-top: -2rem;
+  margin-left: -11vw;
+}
+
+.DescriptionL2M2 {
+  margin-top: -2rem;
+  margin-bottom: 3rem;
+  font-size: 1rem;
+  white-space: normal;
+  width: 200%;
+  margin-left: -9vw;
+}
+.L2M {
+  position: absolute;
+  height: auto;
+  width: 35vw;
+  object-fit: cover;
+  margin-left: -6vw;
+  margin-top: -1rem;
+}

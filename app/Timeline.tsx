@@ -1,33 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const timelineData = [
-  { date: "2010", text: "Début de mes études en informatique" },
-  { date: "2014", text: "Premier stage en entreprise" },
-  { date: "2016", text: "Diplôme obtenu et premier emploi" },
-  { date: "2020", text: "Changement de carrière vers le développement web" },
+  { date: "2024 - ...", text: "IIM - Bachelor Coding Digital & Innovation" },
+  { date: "2019 - 2024 ", text: " CY Tech - Prépa Math-Info" },
+  { date: "2016 - 2019", text: " Lycée François MANSART - BAC S" },
 ];
 
-const Timeline: React.FC = () => {
-  return (
-    <div className="timeline-container" style={{ position: "relative", padding: "2rem" }}>
+const Timeline: React.FC<{ isVisible: boolean }> = ({ isVisible }) => {
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    if (isVisible) {
+      setKey(prev => prev + 1);
+    }
+  }, [isVisible]);
+
+  return isVisible ? (
+    <div className="timeline-container" style={{ position: "relative", padding: "3rem", marginTop: "15vh" }}>
       <div
         style={{
           position: "absolute",
           left: "50%",
           top: "0",
           bottom: "0",
-          width: "4px",
-          backgroundColor: "#ccc",
+          width: "3px",
+          backgroundColor: "#ffffff",
           transform: "translateX(-50%)",
+          zIndex: "2",
         }}
       />
       {timelineData.map((item, index) => (
         <motion.div
-          key={index}
+          key={`${index}-${key}`}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.5, duration: 0.5 }}
+          transition={{
+            delay: (timelineData.length - 1 - index) * 0.5,
+            duration: 0.5
+          }}
           style={{
             position: "relative",
             marginBottom: "2rem",
@@ -41,19 +52,20 @@ const Timeline: React.FC = () => {
               position: "absolute",
               left: "50%",
               transform: "translateX(-50%)",
-              width: "16px",
-              height: "16px",
-              backgroundColor: "#007bff",
+              width: "12px",
+              height: "12px",
+              backgroundColor: "#ffffff",
               borderRadius: "50%",
             }}
-          ></div>
+          />
           <div
             style={{
               width: "200px",
               padding: "1rem",
-              backgroundColor: "#f8f9fa",
-              borderRadius: "8px",
-              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              backgroundColor: "transparent",
+              border: "none",
+              marginLeft: index % 2 === 0 ? "0" : "10rem",
+              marginRight: index % 2 !== 0 ? "0" : "16rem",
             }}
           >
             <h4>{item.date}</h4>
@@ -62,7 +74,7 @@ const Timeline: React.FC = () => {
         </motion.div>
       ))}
     </div>
-  );
+  ) : null;
 };
 
 export default Timeline;
