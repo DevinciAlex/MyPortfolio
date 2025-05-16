@@ -5,8 +5,6 @@ import { gsap } from "gsap";
 import "@/public/css/global.css";
 import Timeline from "./Timeline";
 
-declare module 'particles.js';
-
 declare global {
   interface Window {
     particlesJS: unknown;
