@@ -120,7 +120,7 @@ const Carousel: React.FC = () => {
   const [isTimelineVisible, setIsTimelineVisible] = useState(true);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && window.particlesJS) {
       type ParticlesJSFn = (id: string, config: object) => void;
 
       (window.particlesJS as ParticlesJSFn)("particles-js", {
