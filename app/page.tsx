@@ -120,37 +120,39 @@ const Carousel: React.FC = () => {
   const [isTimelineVisible, setIsTimelineVisible] = useState(true);
 
   useEffect(() => {
-    type ParticlesJSFn = (id: string, config: object) => void;
+    if (typeof window !== "undefined") {
+      type ParticlesJSFn = (id: string, config: object) => void;
 
-    (window.particlesJS as ParticlesJSFn)("particles-js", {
-      particles: {
-        number: { value: 75, density: { enable: true, value_area: 500 } },
-        color: { value: "#ffffff" },
-        shape: { type: "circle", stroke: { width: 0, color: "#000" } },
-        opacity: { value: 0.5 },
-        size: { value: 5, random: true },
-        line_linked: {
-          enable: true,
-          distance: 250,
-          color: "#ffffff",
-          opacity: 0.4,
-          width: 1,
+      (window.particlesJS as ParticlesJSFn)("particles-js", {
+        particles: {
+          number: { value: 75, density: { enable: true, value_area: 500 } },
+          color: { value: "#ffffff" },
+          shape: { type: "circle", stroke: { width: 0, color: "#000" } },
+          opacity: { value: 0.5 },
+          size: { value: 5, random: true },
+          line_linked: {
+            enable: true,
+            distance: 250,
+            color: "#ffffff",
+            opacity: 0.4,
+            width: 1,
+          },
+          move: { enable: true, speed: 2, direction: "none" },
         },
-        move: { enable: true, speed: 2, direction: "none" },
-      },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: { enable: true, mode: "grab" },
-          onclick: { enable: true, mode: "push" },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "grab" },
+            onclick: { enable: true, mode: "push" },
+          },
+          modes: {
+            grab: { distance: 140, line_linked: { opacity: 1 } },
+            push: { particles_nb: 4 },
+          },
         },
-        modes: {
-          grab: { distance: 140, line_linked: { opacity: 1 } },
-          push: { particles_nb: 4 },
-        },
-      },
-      retina_detect: true,
-    });
+        retina_detect: true,
+      });
+    }
   }, []);
 
   useEffect(() => {
