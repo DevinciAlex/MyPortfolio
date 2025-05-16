@@ -120,7 +120,7 @@ const Carousel: React.FC = () => {
   const [isTimelineVisible, setIsTimelineVisible] = useState(true);
 
   useEffect(() => {
-    window.particlesJS("particles-js", {
+    (window.particlesJS as any)("particles-js", {
       particles: {
         number: { value: 75, density: { enable: true, value_area: 500 } },
         color: { value: "#ffffff" },
