@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import "@/public/css/global.css";
 import Timeline from "./Timeline";
-import "particles.js";
 
 declare global {
   interface Window {
@@ -16,37 +15,41 @@ const CarouselPage: React.FC = () => {
   const [isTimelineVisible, setIsTimelineVisible] = useState(true);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.particlesJS) {
-      type ParticlesJSFn = (id: string, config: object) => void;
+    if (typeof window !== "undefined") {
+      import("particles.js").then(() => {
+        if (window.particlesJS) {
+          type ParticlesJSFn = (id: string, config: object) => void;
 
-      (window.particlesJS as ParticlesJSFn)("particles-js", {
-        particles: {
-          number: { value: 75, density: { enable: true, value_area: 500 } },
-          color: { value: "#ffffff" },
-          shape: { type: "circle", stroke: { width: 0, color: "#000" } },
-          opacity: { value: 0.5 },
-          size: { value: 5, random: true },
-          line_linked: {
-            enable: true,
-            distance: 250,
-            color: "#ffffff",
-            opacity: 0.4,
-            width: 1,
-          },
-          move: { enable: true, speed: 2, direction: "none" },
-        },
-        interactivity: {
-          detect_on: "canvas",
-          events: {
-            onhover: { enable: true, mode: "grab" },
-            onclick: { enable: true, mode: "push" },
-          },
-          modes: {
-            grab: { distance: 140, line_linked: { opacity: 1 } },
-            push: { particles_nb: 4 },
-          },
-        },
-        retina_detect: true,
+          (window.particlesJS as ParticlesJSFn)("particles-js", {
+            particles: {
+              number: { value: 75, density: { enable: true, value_area: 500 } },
+              color: { value: "#ffffff" },
+              shape: { type: "circle", stroke: { width: 0, color: "#000" } },
+              opacity: { value: 0.5 },
+              size: { value: 5, random: true },
+              line_linked: {
+                enable: true,
+                distance: 250,
+                color: "#ffffff",
+                opacity: 0.4,
+                width: 1,
+              },
+              move: { enable: true, speed: 2, direction: "none" },
+            },
+            interactivity: {
+              detect_on: "canvas",
+              events: {
+                onhover: { enable: true, mode: "grab" },
+                onclick: { enable: true, mode: "push" },
+              },
+              modes: {
+                grab: { distance: 140, line_linked: { opacity: 1 } },
+                push: { particles_nb: 4 },
+              },
+            },
+            retina_detect: true,
+          });
+        }
       });
     }
   }, []);
