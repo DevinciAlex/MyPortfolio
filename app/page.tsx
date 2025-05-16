@@ -8,7 +8,8 @@ import "particles.js";
 
 declare global {
   interface Window {
-    particlesJS: any;
+    particlesJS: unknown;
+;
   }
 }
 
