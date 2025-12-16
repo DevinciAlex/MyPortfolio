@@ -1,134 +1,343 @@
-    *{
-    margin:0;
-    padding: 0;
-    box-sizing: border-box;
-    color: white;
-  }
-  
-  #particles-js {
-    background-color: black;
-  }
+/* =========================
+   RESET & GLOBAL
+   ========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: white;
+}
 
-  header {
-    display: flex; 
-    justify-content: flex-end; 
-    padding: 1vw 1vh;
-    height: 60px;
-  }
-  
-  .contact {
-      display: flex;
-  }
-  .media{
-    padding-right: 1rem;
-  }
-  .c-mouse-vertical-carousel{
-    position: absolute; 
-    top: 60vh; 
-    left: 80vw;
-    transform: translate(-50%, -50%);
-    white-space: nowrap;
-  }
-  
-  .c-mouse-vertical-carousel__bg-img{
-    position: absolute;
-    margin-top:-30vh;
-    margin-left: -35vw;
-    height: 70vh;
-    width: 80vw;
-    max-width: 100%;
-    transform: translate(-50%, -50%);
-  }
-  
-  .c-mouse-vertical-carousel__title {
-    font-size: 36px;
-    font-family: fantasy;
-  }
-  
-  h2{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 15%;
-    font-size: 2rem;
-  } 
-  
-  button{
-    display: flex;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    padding: 10px 20px;
-    border-radius: 100px;
-    border: 2px solid white;
-    cursor: pointer;
-    color: black;
-  } 
-  
-  .media {
-    cursor: pointer;
-  }
-  
-  .Description {
-    margin-bottom: 5%;
-  }
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: black;
+}
 
-  #photo {
-    max-height: 10rem;
-  }
-  video {
-    position: absolute;
-    height: auto;
-    width: 45vw;
-    object-fit: cover;
-    margin-left: -11vw;
-    margin-top: -1rem;
-  }
+/* =========================
+   PARTICLES BACKGROUND
+   ========================= */
+#particles-js {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-color: black;
+}
+
+/* =========================
+   PAGE STRUCTURE
+   ========================= */
+.page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+main {
+  position: relative;
+  z-index: 10;
+  min-height: calc(100vh - 60px); /* 60px = hauteur header approx */
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centre la carte dans la page */
+}
+
+
+
+/* =========================
+   HEADER & CONTACT
+   ========================= */
+header {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  height: 60px;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.media {
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+}
+
+/* =========================
+   MENU RESPONSIVE (HAMBURGER)
+   ========================= */
+.Menu_Responsive {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  gap: 1rem;
+  left: 3rem;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 1000;
+  color: white;
+  font-size: 1.4rem;
+}
+
+/* =========================
+   OVERLAY (MENU PRINCIPAL)
+   ========================= */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease-in-out, background 180ms ease-in-out;
+}
+
+.overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.overlay-content {
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  position: relative;
+}
+
+/* bouton fermer overlay */
+.overlay-close {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 3000;
+}
+
+
+/* =========================
+   CAROUSEL DANS L’OVERLAY
+   ========================= */
+.c-mouse-vertical-carousel {
+  margin-top: 2.5rem; /* laisser de la place pour le bouton Fermer */
+}
+
+.c-mouse-vertical-carousel__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.c-mouse-vertical-carousel__list-item a {
+  text-decoration: none;
+}
+
+.c-mouse-vertical-carousel__eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  margin-bottom: 0.2rem;
+}
+
+.c-mouse-vertical-carousel__title {
+  font-size: 1.4rem;
+  font-family: fantasy;
+}
+
+/* petite indication visuelle au hover */
+.c-mouse-vertical-carousel__list-item a:hover .c-mouse-vertical-carousel__title {
+  text-decoration: underline;
+}
+
+/* =========================
+   PANNEAUX PRINCIPAUX (BG IMAGES / SECTIONS)
+   ========================= */
+
+/* PANNEAUX PRINCIPAUX (BG IMAGES / SECTIONS) */
+.js-carousel-bg-img {
+  /* caché par défaut */
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  /* mise en forme du panneau (carte) */
+  background: rgba(10, 10, 10, 0.85);
+  border-radius: 16px;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75);
+  width: min(80vw, 1100px);      /* max 1100px, sinon 80% de la largeur */
+  max-height: calc(100vh - 140px); /* évite que ça déborde en hauteur */
+  overflow-y: auto;
+
+  /* ⚠️ IMPORTANT : plus de translate(-50%, -50%) ici */
+  transition: opacity 180ms ease-in-out, visibility 180ms ease-in-out;
+}
+
+/* panneau visible */
+.js-carousel-bg-img.is-visible {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* TITRES */
+.js-carousel-bg-img h2 {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-size: 2rem;
+}
+
+/* =========================
+   SECTION "QUI SUIS-JE ?"
+   ========================= */
 .QUI-SUIS-JE {
   display: flex;
-  margin-left: -11vw;
+  align-items: flex-start;
   gap: 2rem;
-  width: 220%;
 }
- .QUI-SUIS-JE p {
+
+#photo {
+  max-height: 10rem;
+  width: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.QUI-SUIS-JE p {
   white-space: normal;
   line-height: 1.6rem;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }
 
+/* =========================
+   TEXTES DESCRIPTIFS
+   ========================= */
 .Description {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   white-space: normal;
-  width: 200%;
-  margin-bottom: 2rem;
-  margin-top: -2rem;
-  margin-left: -11vw;
+  margin-bottom: 1.5rem;
 }
 
-.DescriptionL2M {
-  font-size: 1rem;
-  white-space: normal;
-  width: 200%;
-  margin-bottom: 2.5rem;
-  margin-top: -2rem;
-  margin-left: -11vw;
-}
-
+.DescriptionL2M,
 .DescriptionL2M2 {
-  margin-top: -2rem;
-  margin-bottom: 3rem;
   font-size: 1rem;
   white-space: normal;
-  width: 200%;
-  margin-left: -9vw;
+  margin-bottom: 1.5rem;
 }
-.L2M {
-  position: absolute;
+
+/* pour séparer un peu les blocs dans L2M */
+.DescriptionL2M2 {
+  margin-top: -0.5rem;
+}
+
+/* =========================
+   VIDÉOS
+   ========================= */
+video {
+  display: block;
+  width: 100%;
+  max-width: 720px;
   height: auto;
-  width: 35vw;
-  object-fit: cover;
-  margin-left: -6vw;
-  margin-top: -1rem;
+  margin: 0 auto 2.5rem auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: black;
+}
+
+/* vidéo L2M (si besoin de style spécifique) */
+.L2M {
+  max-width: 640px;
+}
+
+/* =========================
+   BOUTONS DANS LES PANNEAUX
+   ========================= */
+main button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.6rem;
+  border-radius: 999px;
+  border: 2px solid white;
+  cursor: pointer;
+  color: black;
+  background: white;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin: 0 auto;
+}
+
+/* effet hover */
+main button:hover {
+  background: transparent;
+  color: white;
+}
+
+/* centrer le bouton sous la vidéo/texte */
+.js-carousel-bg-img > button {
+  display: block;
+  margin: 0 auto;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media screen and (max-width: 900px) {
+  main {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .js-carousel-bg-img {
+    width: 95vw;
+    padding: 1.8rem 1.4rem;
+    min-height: auto;
+  }
+
+  .js-carousel-bg-img h2 {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .QUI-SUIS-JE {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  
+  .QUI-SUIS-JE p {
+    font-size: 0.8rem;
+  }
+
+  video {
+    max-width: 100%;
+  }
+}
+
+@media screen and (min-width: 901px) {
+  .overlay-content {
+    max-width: 360px;
+  }
 }

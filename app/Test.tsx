@@ -1,18 +1,30 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { gsap } from "gsap";
 import "@/public/css/global.css";
 import Timeline from "./Timeline";
 
-declare global {
-  interface Window {
-    particlesJS: unknown;
-  }
-}
-
-const CarouselPage: React.FC = () => {
+const Test: React.FC = () => {
+  const [open, setOpen] = useState(false);
   const [isTimelineVisible, setIsTimelineVisible] = useState(true);
+  // helper to show a main panel by index
+  const setMainPanel = (index: number) => {
+    if (typeof window === "undefined") return;
+    const mainBg = Array.from(document.querySelectorAll("main .js-carousel-bg-img")) as HTMLElement[];
+    if (!mainBg.length) return;
+    mainBg.forEach((b) => b.classList.remove("is-visible"));
+    const bg = mainBg[index];
+    if (bg) {
+      bg.classList.add("is-visible");
+      try {
+        gsap.to(bg, { duration: 0.2, autoAlpha: 1, scale: 1 });
+      } catch (e) {
+        /* ignore */
+      }
+    }
+  };
+  
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -166,43 +178,83 @@ const CarouselPage: React.FC = () => {
     }
   }, []);
 
+  // Ensure the first main panel is visible on mount
+  useEffect(() => {
+    setMainPanel(0);
+  }, []);
+  // close on ESC
+  useEffect(() => {          
+          const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   return (
     <div className="page-container">
-      <div id="particles-js" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: -1 }} />
-
-      <header className="header">
-        <div className="contact">
+      {/* particles.js requires an element with id 'particles-js' to render into */}
+      <div id="particles-js" />
+      <header className="header">    
+        <button
+          className="Menu_Responsive"
+          aria-label="Ouvrir le menu"
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span>☰ </span><span>MENU</span>        
+        </button>
+           <div className="contact">
           <img className="media" src="/img/linkedin.svg" alt="LinkedIn" onClick={() => window.open("https://www.linkedin.com/in/alexandre-manceau-068a98280/", "_blank")} />
           <img className="media" src="/img/github.svg" alt="GitHub" onClick={() => window.open("https://github.com/DevinciAlex", "_blank")} />
           <img className="media" src="/img/mail.png" alt="Mail" onClick={() => window.open("mailto:alexandre.manceau@edu.devinci.fr")} />
         </div>
       </header>
 
-      <main className="c-header c-header--archive c-header--project-list">
-        <div className="c-mouse-vertical-carousel js-carousel u-media-wrapper u-media-wrapper--16-9">
-          <ul className="c-mouse-vertical-carousel__list js-carousel-list">
-            {[
-              { id: 0, title: "Qui suis-je ?", eyebrow: "Profil" },
-              { id: 1, title: "Mon Parcours", eyebrow: "Profil" },
-              { id: 2, title: "Morpion", eyebrow: "Python" },
-              { id: 3, title: "Bourse au projet (2024)", eyebrow: "HTML CSS JS" },
-              { id: 4, title: "L2M Assurance", eyebrow: "Next.js" },
-            ].map(({ id, title, eyebrow }) => (
-              <li key={id} className="c-mouse-vertical-carousel__list-item js-carousel-list-item" data-item-id={id}>
-                <a>
-                  <p className="c-mouse-vertical-carousel__eyebrow u-b4">{eyebrow}</p>
-                  <p className="c-mouse-vertical-carousel__title u-a5">{title}</p>
-                </a>
-              </li>
-            ))}
-          </ul>
+     {/* simple overlay */}
+      <div className={`overlay ${open ? "open" : ""}`} onClick={() => setOpen(false)}>
+        <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
+          <button className="overlay-close" onClick={() => setOpen(false)}>
+            x 
+          </button>
+            <div className="c-mouse-vertical-carousel js-carousel u-media-wrapper u-media-wrapper--16-9">
+              <ul className="c-mouse-vertical-carousel__list js-carousel-list">
+                {[
+                  { id: 0, title: "Qui suis-je ?", eyebrow: "Profil" },
+                  { id: 1, title: "Mon Parcours", eyebrow: "Profil" },
+                  { id: 2, title: "Morpion", eyebrow: "Python" },
+                  { id: 3, title: "Bourse au projet (2024)", eyebrow: "HTML CSS JS" },
+                  { id: 4, title: "L2M Assurance", eyebrow: "Next.js" },
+                ].map(({ id, title, eyebrow }) => (
+                  <li key={id} className="c-mouse-vertical-carousel__list-item js-carousel-list-item" data-item-id={id}>
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setMainPanel(id);
+                        setOpen(false);
+                      }}
+                      onMouseEnter={() => setMainPanel(id)}
+                      role="button"
+                    >
+                      <p className="c-mouse-vertical-carousel__eyebrow u-b4">{eyebrow}</p>
+                      <p className="c-mouse-vertical-carousel__title u-a5">{title}</p>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              {/* No overlay-local panels: hover should control the main page panels */}
+          </div>
+        </div>
+      </div>
 
-          <div className="c-mouse-vertical-carousel__bg-img js-carousel-bg-img">
+      <main style={{ padding: "2rem", color: "white" }}>
+       <div className="c-mouse-vertical-carousel__bg-img js-carousel-bg-img">
             <h2>Alexandre MANCEAU</h2>
             <div className="QUI-SUIS-JE">
               <img id="photo" src="/img/Alexandre.jpg" alt="photo Alexandre MANCEAU" />
               <p>
-                Étudiant en 2ème année de Bachelor en Développement Web à l&apos;IMM,<br/>
+                Étudiant en 3ème année de Bachelor en Développement Web à l&apos;IMM,<br/>
                 j&apos;apprends à concevoir des projets numériques à la fois créatifs et fonctionnels.<br/>
                 Curieux, rigoureux et motivé, j’ai déjà eu l’occasion de collaborer sur différents types de projets, que ce soit pour une agence ou dans un cadre scolaire comme les Bourses aux Projets.
               </p>
@@ -242,10 +294,9 @@ const CarouselPage: React.FC = () => {
             <video className="L2M" controls muted src="/videos/L2M.mp4" />
             <button>Code privé</button>
           </div>
-        </div>
       </main>
     </div>
   );
 };
 
-export default CarouselPage;
+export default Test;
