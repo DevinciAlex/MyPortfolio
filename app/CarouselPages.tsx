@@ -24,16 +24,17 @@ const CarouselPage: React.FC = () => {
       }
     }
   };
-  
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      import("particles.js").then(() => {
-        if (window.particlesJS) {
-          type ParticlesJSFn = (id: string, config: object) => void;
+  if (typeof window !== "undefined") {
+    import("particles.js").then(() => {
+      const w = window as any;
 
-          (window.particlesJS as ParticlesJSFn)("particles-js", {
-            particles: {
+      if (w.particlesJS) {
+        type ParticlesJSFn = (id: string, config: object) => void;
+
+        (w.particlesJS as ParticlesJSFn)("particles-js", {
+          particles: {
               number: { value: 75, density: { enable: true, value_area: 500 } },
               color: { value: "#ffffff" },
               shape: { type: "circle", stroke: { width: 0, color: "#000" } },
@@ -60,11 +61,11 @@ const CarouselPage: React.FC = () => {
               },
             },
             retina_detect: true,
-          });
-        }
-      });
-    }
-  }, []);
+        });
+      }
+    });
+  }
+  }, []); 
 
   useEffect(() => {
     if (typeof window !== "undefined") {
