@@ -65,7 +65,7 @@ const Timeline: React.FC<{ isVisible: boolean }> = ({ isVisible }) => {
               backgroundColor: "transparent",
               border: "none",
               marginLeft: index % 2 === 0 ? "0" : "10rem",
-              marginRight: index % 2 !== 0 ? "0" : "16rem",
+              marginRight: index % 2 !== 0 ? "0" : "10rem",
             }}
           >
             <h4>{item.date}</h4>

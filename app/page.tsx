@@ -1,8 +1,9 @@
 import CarouselPage from "./CarouselPages";
-import Test from "./Test";
+import "@/public/css/global.css";
+
 
 export default function Page() {
-  return <Test />;
+  return <CarouselPage />;
 }
 
 
