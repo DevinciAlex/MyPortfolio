@@ -256,7 +256,7 @@ const CarouselPage: React.FC = () => {
               <p>
                 Étudiant en 3ème année de Bachelor en Développement Web à l&apos;IMM,<br/>
                 j&apos;apprends à concevoir des projets numériques à la fois créatifs et fonctionnels.<br/>
-                Curieux, rigoureux et motivé, j’ai déjà eu l’occasion de collaborer sur différents types de projets, que ce soit pour une agence d'assurance ou dans un cadre scolaire comme les Bourses aux Projets.
+                Curieux, rigoureux et motivé, j’ai déjà eu l’occasion de collaborer sur différents types de projets, que ce soit pour une agence d&apos;assurance ou dans un cadre scolaire comme les Bourses aux Projets.
               </p>
             </div>
           </div>
