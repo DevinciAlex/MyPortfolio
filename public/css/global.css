@@ -103,6 +103,7 @@ header {
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease-in-out, background 180ms ease-in-out;
+  overflow: hidden;
 }
 
 .overlay.open {
@@ -118,6 +119,9 @@ header {
   width: 90%;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
   position: relative;
+  max-height: 80vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* bouton fermer overlay */
@@ -339,5 +343,7 @@ main button:hover {
 @media screen and (min-width: 901px) {
   .overlay-content {
     max-width: 360px;
+    max-height: 85vh;
+    padding: 1.25rem 1.25rem;    
   }
 }
