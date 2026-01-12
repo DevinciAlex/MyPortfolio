@@ -31,6 +31,27 @@ const CarouselPage: React.FC = () => {
   };
 
   useEffect(() => {
+  if (typeof document === "undefined") return;
+
+  if (open) {
+    document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none"; // aide mobile
+  } else {
+    document.body.style.overflow = "";
+    document.body.style.touchAction = "";
+  }
+
+  return () => {
+    document.body.style.overflow = "";
+    document.body.style.touchAction = "";
+  };
+}, [open]);
+
+useEffect(() => {
+  document.body.style.overflow = open ? "hidden" : "auto";
+}, [open]);
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       import("particles.js").then(() => {
         const w = window as ParticlesWindow;

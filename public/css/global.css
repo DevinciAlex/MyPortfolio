@@ -96,15 +96,25 @@ header {
 .overlay {
   position: fixed;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 2000;
+
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease-in-out, background 180ms ease-in-out;
-  overflow: hidden;
+  background: transparent;
+
+  display: flex;                /* REMIS */
+  flex-direction: column;       /* important pour scroll + centrage */
+  align-items: center;          /* centrer horizontalement */
+  justify-content: center;      /* centrer verticalement */
+  
+  overflow-y: auto;
+  overflow-x: hidden;             /* scroll */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 2rem 1rem;           /* marge haut/bas */
 }
+
 
 .overlay.open {
   opacity: 1;
@@ -113,16 +123,12 @@ header {
 }
 
 .overlay-content {
-  border-radius: 12px;
-  padding: 1.5rem 2rem;
-  max-width: 420px;
-  width: 90%;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-  position: relative;
-  max-height: 80vh;
+  height: 100%;
+  max-height: none;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+
 
 /* bouton fermer overlay */
 .overlay-close {
