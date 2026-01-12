@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { gsap } from "gsap";
 import Timeline from "./Timeline";
 
-// ✅ Type local pour éviter `any` (et satisfaire @typescript-eslint/no-explicit-any)
+// Type local pour éviter `any`
 type ParticlesWindow = Window & {
   particlesJS?: (id: string, config: object) => void;
 };
@@ -16,7 +16,9 @@ const CarouselPage: React.FC = () => {
   // helper to show a main panel by index
   const setMainPanel = (index: number) => {
     if (typeof window === "undefined") return;
-    const mainBg = Array.from(document.querySelectorAll("main .js-carousel-bg-img")) as HTMLElement[];
+    const mainBg = Array.from(
+      document.querySelectorAll("main .js-carousel-bg-img")
+    ) as HTMLElement[];
     if (!mainBg.length) return;
     mainBg.forEach((b) => b.classList.remove("is-visible"));
     const bg = mainBg[index];
@@ -30,27 +32,25 @@ const CarouselPage: React.FC = () => {
     }
   };
 
+  // 🔒 Bloquer le scroll de la page quand le menu est ouvert
   useEffect(() => {
-  if (typeof document === "undefined") return;
+    if (typeof document === "undefined") return;
 
-  if (open) {
-    document.body.style.overflow = "hidden";
-    document.body.style.touchAction = "none"; // aide mobile
-  } else {
-    document.body.style.overflow = "";
-    document.body.style.touchAction = "";
-  }
+    if (open) {
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    }
 
-  return () => {
-    document.body.style.overflow = "";
-    document.body.style.touchAction = "";
-  };
-}, [open]);
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    };
+  }, [open]);
 
-useEffect(() => {
-  document.body.style.overflow = open ? "hidden" : "auto";
-}, [open]);
-
+  // particles.js
   useEffect(() => {
     if (typeof window !== "undefined") {
       import("particles.js").then(() => {
@@ -91,6 +91,7 @@ useEffect(() => {
     }
   }, []);
 
+  // Carousel GSAP
   useEffect(() => {
     if (typeof window !== "undefined") {
       class VerticalMouseDrivenCarousel {
@@ -112,9 +113,11 @@ useEffect(() => {
         }
 
         private getBgImgs = () => document.querySelectorAll(this.defaults.bgImg);
-        private getListItems = () => document.querySelectorAll(this.defaults.listItem);
+        private getListItems = () =>
+          document.querySelectorAll(this.defaults.listItem);
         private getList = () => document.querySelector(this.defaults.list);
-        private getCarousel = () => document.querySelector(this.defaults.carousel);
+        private getCarousel = () =>
+          document.querySelector(this.defaults.carousel);
 
         private init() {
           const bgImgs = this.getBgImgs();
@@ -136,8 +139,12 @@ useEffect(() => {
           carousel.addEventListener("mousemove", (e: Event) => {
             if (this.isMouseOverImage) return;
             const mouseEvent = e as MouseEvent;
-            this.posY = mouseEvent.pageY - carousel.getBoundingClientRect().top;
-            const normalizedPosY = Math.max(0, Math.min(bottomLimit, this.posY));
+            this.posY =
+              mouseEvent.pageY - carousel.getBoundingClientRect().top;
+            const normalizedPosY = Math.max(
+              0,
+              Math.min(bottomLimit, this.posY)
+            );
             const offset = (-normalizedPosY / carouselHeight) * listHeight;
             gsap.to(list, { duration: 0.3, y: offset });
           });
@@ -145,8 +152,14 @@ useEffect(() => {
 
         private preventScrollOnImages() {
           this.getBgImgs().forEach((img) => {
-            img.addEventListener("mouseenter", () => (this.isMouseOverImage = true));
-            img.addEventListener("mouseleave", () => (this.isMouseOverImage = false));
+            img.addEventListener(
+              "mouseenter",
+              () => (this.isMouseOverImage = true)
+            );
+            img.addEventListener(
+              "mouseleave",
+              () => (this.isMouseOverImage = false)
+            );
           });
         }
 
@@ -157,7 +170,11 @@ useEffect(() => {
               const id = parseInt(target.dataset.itemId || "0");
               this.listOpacityController(id);
               gsap.to(target, { duration: 0.2, autoAlpha: 1 });
-              gsap.to(".is-visible", { duration: 0.2, autoAlpha: 0, scale: 1.05 });
+              gsap.to(".is-visible", {
+                duration: 0.2,
+                autoAlpha: 0,
+                scale: 1.05,
+              });
 
               const bgImg = this.getBgImgs()[id];
               if (!bgImg.classList.contains("is-visible")) {
@@ -166,9 +183,12 @@ useEffect(() => {
 
               gsap.to(bgImg, { duration: 0.2, autoAlpha: 1, scale: 1 });
 
-              const timelineVisibilityEvent = new CustomEvent("timelineVisibility", {
-                detail: { isVisible: id === 1 },
-              });
+              const timelineVisibilityEvent = new CustomEvent(
+                "timelineVisibility",
+                {
+                  detail: { isVisible: id === 1 },
+                }
+              );
               document.dispatchEvent(timelineVisibilityEvent);
             });
           });
@@ -197,7 +217,8 @@ useEffect(() => {
       }
 
       new VerticalMouseDrivenCarousel();
-      const handler = (e: Event) => setIsTimelineVisible((e as CustomEvent).detail.isVisible);
+      const handler = (e: Event) =>
+        setIsTimelineVisible((e as CustomEvent).detail.isVisible);
       document.addEventListener("timelineVisibility", handler);
       return () => document.removeEventListener("timelineVisibility", handler);
     }
@@ -219,7 +240,6 @@ useEffect(() => {
 
   return (
     <div className="page-container">
-      {/* particles.js requires an element with id 'particles-js' to render into */}
       <div id="particles-js" />
       <header className="header">
         <button
@@ -236,14 +256,33 @@ useEffect(() => {
             className="media"
             src="/img/linkedin.svg"
             alt="LinkedIn"
-            onClick={() => window.open("https://www.linkedin.com/in/alexandre-manceau-068a98280/", "_blank")}
+            onClick={() =>
+              window.open(
+                "https://www.linkedin.com/in/alexandre-manceau-068a98280/",
+                "_blank"
+              )
+            }
           />
-          <img className="media" src="/img/github.svg" alt="GitHub" onClick={() => window.open("https://github.com/DevinciAlex", "_blank")} />
-          <img className="media" src="/img/mail.png" alt="Mail" onClick={() => window.open("mailto:alexandre.manceau@edu.devinci.fr")} />
+          <img
+            className="media"
+            src="/img/github.svg"
+            alt="GitHub"
+            onClick={() =>
+              window.open("https://github.com/DevinciAlex", "_blank")
+            }
+          />
+          <img
+            className="media"
+            src="/img/mail.png"
+            alt="Mail"
+            onClick={() =>
+              window.open("mailto:alexandre.manceau@edu.devinci.fr")
+            }
+          />
         </div>
       </header>
 
-      {/* simple overlay */}
+      {/* overlay */}
       <div className={`overlay ${open ? "open" : ""}`} onClick={() => setOpen(false)}>
         <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
           <button className="overlay-close" onClick={() => setOpen(false)}>
@@ -258,7 +297,11 @@ useEffect(() => {
                 { id: 3, title: "Bourse au projet (2024)", eyebrow: "HTML CSS JS" },
                 { id: 4, title: "L2M Assurance", eyebrow: "Next.js" },
               ].map(({ id, title, eyebrow }) => (
-                <li key={id} className="c-mouse-vertical-carousel__list-item js-carousel-list-item" data-item-id={id}>
+                <li
+                  key={id}
+                  className="c-mouse-vertical-carousel__list-item js-carousel-list-item"
+                  data-item-id={id}
+                >
                   <a
                     href="#"
                     onClick={(e) => {
@@ -269,13 +312,16 @@ useEffect(() => {
                     onMouseEnter={() => setMainPanel(id)}
                     role="button"
                   >
-                    <p className="c-mouse-vertical-carousel__eyebrow u-b4">{eyebrow}</p>
-                    <p className="c-mouse-vertical-carousel__title u-a5">{title}</p>
+                    <p className="c-mouse-vertical-carousel__eyebrow u-b4">
+                      {eyebrow}
+                    </p>
+                    <p className="c-mouse-vertical-carousel__title u-a5">
+                      {title}
+                    </p>
                   </a>
                 </li>
               ))}
             </ul>
-            {/* No overlay-local panels: hover should control the main page panels */}
           </div>
         </div>
       </div>
@@ -284,14 +330,21 @@ useEffect(() => {
         <div className="c-mouse-vertical-carousel__bg-img js-carousel-bg-img">
           <h2>Alexandre MANCEAU</h2>
           <div className="QUI-SUIS-JE">
-            <img id="photo" src="/img/Alexandre.jpg" alt="photo Alexandre MANCEAU" />
+            <img
+              id="photo"
+              src="/img/Alexandre.jpg"
+              alt="photo Alexandre MANCEAU"
+            />
             <p>
               Étudiant en 3ème année de Bachelor en Développement Web à l&apos;IMM,
               <br />
-              j&apos;apprends à concevoir des projets numériques à la fois créatifs et fonctionnels.
+              j&apos;apprends à concevoir des projets numériques à la fois créatifs et
+              fonctionnels.
               <br />
-              Curieux, rigoureux et motivé, j’ai déjà eu l’occasion de collaborer sur différents types de projets, que ce soit pour une agence
-              d&apos;assurance ou dans un cadre scolaire comme les Bourses aux Projets.
+              Curieux, rigoureux et motivé, j’ai déjà eu l’occasion de collaborer
+              sur différents types de projets, que ce soit pour une agence
+              d&apos;assurance ou dans un cadre scolaire comme les Bourses aux
+              Projets.
             </p>
           </div>
         </div>
@@ -305,14 +358,22 @@ useEffect(() => {
           <h2>Morpion</h2>
           <p className="Description">Projet en Python réalisé en 2024</p>
           <video autoPlay loop playsInline muted src="/videos/Morpion.mp4" />
-          <button onClick={() => window.open("https://github.com/DevinciAlex/Morpion", "_blank")}>Voir le code</button>
+          <button
+            onClick={() =>
+              window.open("https://github.com/DevinciAlex/Morpion", "_blank")
+            }
+          >
+            Voir le code
+          </button>
         </div>
 
         <div className="c-mouse-vertical-carousel__bg-img js-carousel-bg-img">
           <h2>Bourse au projet</h2>
           <p className="Description">
-            Projet réalisé en 2024 dans un cadre scolaire. La mission consistait à digitaliser un support interactif basé sur l’atelier existant
-            Handiscope, afin de sensibiliser les salariés d’entreprise aux différentes formes de handicap.
+            Projet réalisé en 2024 dans un cadre scolaire. La mission consistait à
+            digitaliser un support interactif basé sur l’atelier existant
+            Handiscope, afin de sensibiliser les salariés d’entreprise aux
+            différentes formes de handicap.
           </p>
           <video controls muted src="/videos/BAP2024.mp4" />
           <button>Code privé</button>
@@ -320,7 +381,9 @@ useEffect(() => {
 
         <div className="c-mouse-vertical-carousel__bg-img js-carousel-bg-img">
           <h2>L2M Assurance</h2>
-          <p className="DescriptionL2M">Projet web réalisé pour la gestion interne d’un cabinet d’assurance.</p>
+          <p className="DescriptionL2M">
+            Projet web réalisé pour la gestion interne d’un cabinet d’assurance.
+          </p>
           <p className="DescriptionL2M">Fonctionnalités :</p>
           <p className="DescriptionL2M2">
             - Création de comptes employés
@@ -329,10 +392,14 @@ useEffect(() => {
             <br />
             - Agenda interactif (FullCalendar) pour visualiser les événements
             <br />
-            - Gestion des paramètres : mot de passe, utilisateurs, thème clair/sombre
+            - Gestion des paramètres : mot de passe, utilisateurs, thème
+            clair/sombre
             <br />
           </p>
-          <p className="DescriptionL2M">Techs : Next.js (App Router), React, FullCalendar, API REST, Context Auth</p>
+          <p className="DescriptionL2M">
+            Techs : Next.js (App Router), React, FullCalendar, API REST, Context
+            Auth
+          </p>
           <video className="L2M" controls muted src="/videos/L2M.mp4" />
           <button>Code privé</button>
         </div>

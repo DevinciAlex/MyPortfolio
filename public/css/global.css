@@ -101,19 +101,14 @@ header {
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease-in-out, background 180ms ease-in-out;
-  background: transparent;
+  background: rgba(0, 0, 0, 0.75);
 
-  display: flex;                /* REMIS */
-  flex-direction: column;       /* important pour scroll + centrage */
-  align-items: center;          /* centrer horizontalement */
-  justify-content: center;      /* centrer verticalement */
-  
-  overflow-y: auto;
-  overflow-x: hidden;             /* scroll */
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  padding: 2rem 1rem;           /* marge haut/bas */
+  display: flex;
+  justify-content: center; /* centrer horizontalement */
+  align-items: center;
+  padding-top: 4rem;   
 }
+
 
 
 .overlay.open {
@@ -123,11 +118,16 @@ header {
 }
 
 .overlay-content {
-  height: 100%;
-  max-height: none;
-  overflow-y: auto;
+  width: 90%; 
+  overflow-y: auto;             /* ⬆️ permet de scroller */
   -webkit-overflow-scrolling: touch;
+  background: rgba(0,0,0,0.9);
+  opacity: 0.8;
+  border-radius: 12px;
+  padding: 1.5rem;
+  overflow: visible;
 }
+
 
 
 /* bouton fermer overlay */
